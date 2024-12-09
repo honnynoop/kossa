@@ -1,0 +1,31 @@
+docker –version
+
+docker pull mysql:8
+
+docker run --name mysqldb -e MYSQL_ROOT_PASSWORD=kossa -d -p 3309:3306 mysql:8
+
+docker ps -a
+
+docker exec -it mysqldb mysql -u root -p
+
+SHOW DATABASES;
+SELECT VERSION();
+
+docker stop mysqldb
+docker start mysqldb
+-- 새 사용자 생성
+CREATE USER 'kossa'@'%' IDENTIFIED BY 'kossa';
+
+-- 모든 데이터베이스와 테이블에 대한 모든 권한 부여
+GRANT ALL PRIVILEGES ON *.* TO 'kossa'@'%' WITH GRANT OPTION;
+
+-- 권한 변경사항 적용
+FLUSH PRIVILEGES;
+
+SHOW GRANTS FOR 'kossa'@'%';
+
+
+CREATE SCHEMA IF NOT EXISTS `kossa` DEFAULT  CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci ;
+
+
+
